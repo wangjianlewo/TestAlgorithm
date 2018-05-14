@@ -30,8 +30,8 @@
 //    [self quickSortArray:arr withLeftIndex:0 andRightIndex:arr.count - 1];
     
     
-    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(3),@(4),@(7),@(1),@(8),@(2),nil];
-    [self selectSortArray:bubbleArray];
+    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(3),@(4),@(7),@(1),@(2),nil];
+    [self mergeSortArray:bubbleArray];
     NSLog(@"%@",bubbleArray);
 }
 
@@ -78,6 +78,77 @@
         array[minIndex] =  [NSNumber numberWithInt:temp];
     }
     NSLog(@"%d",count);
+}
+
+- (void)insertSortArray:(NSMutableArray *)array
+{
+    if (array.count < 2 || array == nil) {
+        return;
+    }
+    //最外层，代表要插入第i个数。i=0 的时候，数组里面没有数据，所以应从1开始
+    for (int i = 1; i < array.count; i ++) {
+        //通过比较i的值 与  i 的前一个数 的大小，来判断是否需要交换
+        //如果i的值比较大，则无需交换，跳出此次循环
+        //如果i的值比较小，交换。 交换后继续比较 i-1 的前一个数，与 i-1 的大小
+        //注意：内层循环会执行j--，故arry[i]， 要写成arry[j+1]
+        for (int j = i - 1 ; j>=0  ; j--) {
+            if ([array[j+1] intValue] < [array[j] intValue]) {
+                int temp = [array[j] intValue];
+                array[j]= array[j+1];
+                array[j+1] = [NSNumber numberWithInt:temp];
+                NSLog(@"%@",array);
+
+            }else {
+                break;
+            }
+        }
+    }
+}
+
+- (void)mergeSortArray:(NSMutableArray *)array
+{
+    if (array.count < 2 || array == nil) {
+        return;
+    }
+    [self sortArray:array andL:0 andR:array.count - 1];
+}
+
+- (void)sortArray:(NSArray *)array andL:(NSInteger )L andR:(NSInteger)R
+{
+    if (L == R) {
+        return;
+    }
+    int mid = (L+R)/2;
+    NSLog(@"中间值为%d 数组为 ",mid);
+    [self sortArray:array andL:L andR:mid];
+    [self sortArray:array andL:mid+1 andR:R];
+//    [self mergeArray:array andL:L andR:R andMid:mid];
+}
+
+-(void)mergeArray :(NSArray *)array andL:(NSInteger )L andR:(NSInteger)R andMid:(NSInteger)mid
+{
+    NSMutableArray *helpArray = [NSMutableArray arrayWithCapacity:R-L+1];
+    int i = 0;
+    int p1 = L;
+    int p2 = mid+1;
+    while (p1<=mid || p2<=R-1) {
+        if (array[p1] < array[p2]) {
+           helpArray[i ++ ] = array[p1 ++];
+        }else {
+            helpArray[i ++ ] = array[p2++];
+        }
+        
+    }
+    
+    while (p1<=mid) {
+        helpArray[i++]= array[p1++];
+    }
+    while (p2<=R) {
+        helpArray[i++]=array[p2++];
+    }
+    
+    NSLog(@"helparray %@",helpArray);
+    
 }
 
 -(NSString *)findMaxSubstring:(NSString *)string1 andString2:(NSString *)string2
