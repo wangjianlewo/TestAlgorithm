@@ -17,20 +17,69 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSString *str1= @"ilovechina";
-    NSString *str2= @"ihatechina";
-    NSLog(@"你输入的两个字符串为:%@,%@",str1,str2);
-    NSString *subStr=[self findMaxSubstring:str1 andString2:str2];
-    if (subStr) {
-        NSLog(@"最长公共子串是:%@",subStr);
-    }
+//    NSString *str1= @"ilovechina";
+//    NSString *str2= @"ihatechina";
+//    NSLog(@"你输入的两个字符串为:%@,%@",str1,str2);
+//    NSString *subStr=[self findMaxSubstring:str1 andString2:str2];
+//    if (subStr) {
+//        NSLog(@"最长公共子串是:%@",subStr);
+//    }
     
     
-    NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:@(6), @(1),@(2),@(5),@(9),@(4),@(3),@(7),nil];
-    [self quickSortArray:arr withLeftIndex:0 andRightIndex:arr.count - 1];
+//    NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:@(6), @(1),@(2),@(5),@(9),@(4),@(3),@(7),nil];
+//    [self quickSortArray:arr withLeftIndex:0 andRightIndex:arr.count - 1];
     
-    NSLog(@"%@",arr);
+    
+    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(3),@(4),@(7),@(1),@(8),@(2),nil];
+    [self selectSortArray:bubbleArray];
+    NSLog(@"%@",bubbleArray);
 }
+
+- (void)bubbleSortArray:(NSMutableArray *)array
+{
+    if (array.count < 2 || array == nil) {
+        return;
+    }
+    //该for循环代表：遍历1次找到1个最大的数，需要遍历n次
+    for (NSUInteger i = array.count - 1; i >0 ; i--) {
+        //该for循环为，数组按照0~n-1开始遍历，两个数比较，较大的放在后面，则找到了最大的数，放在最后位置了。
+        //由于n-1 位置已经确认为最大的了，则不参与下次遍历。故下次遍历则从0~遍历到n-2
+        for (int j = 0; j < i; j++) {
+            if ([array[j] intValue] > [array[j +1] intValue]) {
+                int temp = [array[j+1] intValue];
+                array[j + 1] = array[j];
+                array[j]= [NSNumber numberWithInt:temp];
+            }
+        }
+    }
+}
+
+- (void)selectSortArray:(NSMutableArray *)array
+{
+    if (array.count < 2 || array == nil) {
+        return;
+    }
+    int count = 0;
+    //最外层，依然代表要遍历n次
+    for (int i =0; i < array.count; i ++) {
+        int minIndex = i ;
+        count++;
+        //通过遍历j~n-1个数，找到最小的数的index，并记录
+        for (int j = i+1 ; j<array.count ; j++) {
+            if ([array[j] intValue] < [array[minIndex] intValue]) {
+                minIndex = j;
+            }
+            count++;
+        }
+        //将当前找到的最小数，与遍历的第一个数进行交换。 因为要和第i个数交换，所以从j = i+1,即下一个数开始遍历
+        //则下次从第j~n-1个数，遍历即可
+        int temp = [array[i] intValue];
+        array[i] = array[minIndex];
+        array[minIndex] =  [NSNumber numberWithInt:temp];
+    }
+    NSLog(@"%d",count);
+}
+
 -(NSString *)findMaxSubstring:(NSString *)string1 andString2:(NSString *)string2
 {
     NSInteger length1 = string1.length;
