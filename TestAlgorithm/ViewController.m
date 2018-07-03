@@ -30,9 +30,95 @@
 //    [self quickSortArray:arr withLeftIndex:0 andRightIndex:arr.count - 1];
     
     
-    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(3),@(4),@(7),@(1),@(2),nil];
+//    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(2),@(1),@(5),@(9),@(4),@(3),@(7),nil];
+//    [self mergeSortArray:bubbleArray];
+//    NSLog(@"%@",bubbleArray);
+    
+    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(2),@(1),@(5),@(9),@(4),@(3),@(7),nil];
+//    [self lessLeftMoreRight:bubbleArray andCompareNum:5];
     [self mergeSortArray:bubbleArray];
     NSLog(@"%@",bubbleArray);
+}
+/*问题：
+ 给定一个数组arr，和一个数num，请把小于等于num的数放在数 组的左边，大于num的数放在数组的右边。
+ 要求额外空间复杂度O(1)，时间复杂度O(N)
+ */
+
+/*
+ 讲解：
+ 假想一个比num小的区域，目前index=-1，0个元素
+ 从无序数组第0个数开始遍历，每遍历1个就+1，直到遍历到末尾
+ 如果arr[current]比num 小，则原num小于区域+1，并且将arr[current] 与 将被划进小于num区域的数值交换，则arr[current] 被记录进了小于num区域
+ 如果arr[current]比num 大，则不做任何操作
+ */
+-(void)lessLeftMoreRight:(NSMutableArray *)array andCompareNum:(int)number
+{
+    int current = 0;
+    int less = -1;
+    while (current < array.count) {
+        if ([array[current] intValue]  <= number) {
+            less++;
+            [self swap:array andi:less andj:current];
+        }
+        current ++;
+    }
+}
+
+/*问题：
+ 问题二(荷兰国旗问题)
+ 给定一个数组arr，和一个数num，请把小于num的数放在数组的 左边，等于num的数放在数组的中间，大于num的数放在数组的 右边。
+ 要求额外空间复杂度O(1)，时间复杂度O(N)
+ */
+
+/*
+ 讲解：
+ 假想一个比num小的区域在数组左边，比num大的区域在数组右边，中间是等于num区域（初始为数组count）
+ 如果arr[current]比num 小，则原num小于区域变大 +1，并且将arr[current] 与 将被划进小于num区域的数值交换，则arr[current] 被记录进了小于num区域,遍历下个数：current+1
+ 如果arr[current]比num 大，则原num大于区域变大 +1 （num区域变大，则代表在原数组上挤压，即往前挪），并且将arr[current] 与 将被划进大于num区域的数值交换，因为大于num区域往前挪时，还不知道原值是比num大还是小。所以current 不加1
+ 如果arr[current]等于num，则等于区域不变，遍历下个数：current+1
+ 从无序数组第0个数开始遍历，那什么时候结束呢？ 当遍历到大于num区域的起始位置时。
+
+ */
+-(void)netherlandsFlag:(NSMutableArray *)array andCompareNum:(int)number
+{
+    NSUInteger current = 0;
+    NSUInteger less = -1;
+    NSUInteger more = array.count;
+    while (current < more) {
+        if ([array[current] intValue]  < number) {
+            less++;
+            [self swap:array andi:less andj:current];
+            current ++;
+        }else if ([array[current] intValue]  > number) {
+            more --;
+            [self swap:array andi:more andj:current];
+        }else {
+            current ++;
+        }
+    }
+}
+
+-(void)optimizeNetherlandsFlag:(NSMutableArray *)array andCompareNum:(int)number
+{
+    NSUInteger current = 0;
+    NSUInteger less = -1;
+    NSUInteger more = array.count;
+    while (current < more) {
+        if ([array[current] intValue]  < number) {
+            [self swap:array andi:++less andj:current++];
+        }else if ([array[current] intValue]  > number) {
+            [self swap:array andi:--more andj:current];
+        }else {
+            current ++;
+        }
+    }
+}
+
+- (void)swap:(NSMutableArray *)array andi:(NSUInteger) i andj:(NSUInteger)j
+{
+    int temp = [array[i] intValue];
+    array[i] = array[j];
+    array[j]= [NSNumber numberWithInt:temp];
 }
 
 - (void)bubbleSortArray:(NSMutableArray *)array
@@ -110,45 +196,57 @@
     if (array.count < 2 || array == nil) {
         return;
     }
-    [self sortArray:array andL:0 andR:array.count - 1];
+    //归并排序
+    [self sortArray:array andL:0 andR:array.count-1];
 }
 
-- (void)sortArray:(NSArray *)array andL:(NSInteger )L andR:(NSInteger)R
+- (void)sortArray:(NSMutableArray *)array andL:(NSInteger )L andR:(NSInteger)R
 {
     if (L == R) {
         return;
     }
-    int mid = (L+R)/2;
-    NSLog(@"中间值为%d 数组为 ",mid);
+    NSInteger mid = (L + R)/2;
+    NSLog(@"中间值为%ld 数组为 ",mid);
+    //迭代前半部分
     [self sortArray:array andL:L andR:mid];
+    //迭代后半部分
     [self sortArray:array andL:mid+1 andR:R];
-//    [self mergeArray:array andL:L andR:R andMid:mid];
+    //两个有序数组合并
+    [self mergeArray:array andL:L andR:R andMid:mid];
 }
 
--(void)mergeArray :(NSArray *)array andL:(NSInteger )L andR:(NSInteger)R andMid:(NSInteger)mid
+-(void)mergeArray :(NSMutableArray *)array andL:(NSInteger )L andR:(NSInteger)R andMid:(NSInteger)mid
 {
     NSMutableArray *helpArray = [NSMutableArray arrayWithCapacity:R-L+1];
-    int i = 0;
-    int p1 = L;
-    int p2 = mid+1;
-    while (p1<=mid || p2<=R-1) {
+    NSInteger i = 0;
+    NSInteger p1 = L;
+    NSInteger p2 = mid+1;
+    //防止前半部分数组和后半部分数组越界
+    while (p1<=mid && p2<=R) {
+        //array 按照mid分割为两个数组，并且是两个有序数组。将两数组合并，p1指向第1个数组的0位置，p2指向第二个数组的0位置。
+        //比较大小后，赋值给helpArray，较小的值的位置++，并且i++
         if (array[p1] < array[p2]) {
-           helpArray[i ++ ] = array[p1 ++];
+            helpArray[i] = array[p1];
+            p1++;
         }else {
-            helpArray[i ++ ] = array[p2++];
+            helpArray[i] = array[p2];
+            p2++;
         }
-        
+        i++;
     }
-    
+    //当跳出上面的while循环时，是由于p2>r 或者p1>mid了，证明有1个数组比较完毕了。
+    //将jiang剩余没比较的数，直接copy即可
     while (p1<=mid) {
         helpArray[i++]= array[p1++];
     }
     while (p2<=R) {
         helpArray[i++]=array[p2++];
     }
-    
-    NSLog(@"helparray %@",helpArray);
-    
+    //注意：我们需要按照对应的index，修改array
+    for (i = 0; i < helpArray.count; i++) {
+        array[L + i] = helpArray[i];
+    }
+    NSLog(@"当前比较的数组：%@  原始数组%@",helpArray,array);
 }
 
 -(NSString *)findMaxSubstring:(NSString *)string1 andString2:(NSString *)string2
