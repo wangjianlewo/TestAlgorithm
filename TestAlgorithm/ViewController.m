@@ -26,9 +26,9 @@
 //    [self partionWithArray:bubbleArray andLPosition:0 andRPosition:bubbleArray.count - 1];
     NSLog(@"%@",bubbleArray);
 
-    [ViewController devided];
-    [ViewController letterToInt:@"AAA"];
-    [ViewController charToInt:@"AAA"];
+//    [ViewController devided];
+//    [ViewController letterToInt:@"AAA"];
+//    [ViewController charToInt:@"AAA"];
 
 }
 
@@ -43,7 +43,7 @@
 - (void)quickSortWithArray:(NSMutableArray *)array andLPosition:(NSInteger) l andRPosition:(NSInteger )r
 {
     if (l < r) {
-//        [self swap:array andi:(l+r)/2 andj:r];
+//        [self swap:array andi:(l+r)/2 andj:r];//随机快排
         NSArray *positionArray = [self partionWithArray:array andLPosition:l andRPosition:r];
         [self quickSortWithArray:array andLPosition:l andRPosition:([positionArray[0] intValue])];
         [self quickSortWithArray:array andLPosition:([positionArray[1]intValue] +1) andRPosition:r];
