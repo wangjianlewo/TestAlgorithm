@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E31488A20F35814001894FF /* ViewController+DayOne.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E31488820F35814001894FF /* ViewController+DayOne.m */; };
 		9E44C0152098880E007F3B9C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E44C0142098880E007F3B9C /* main.m */; };
 		9E44C0182098880E007F3B9C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E44C0172098880E007F3B9C /* AppDelegate.m */; };
 		9E44C01B2098880E007F3B9C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E44C01A2098880E007F3B9C /* ViewController.m */; };
@@ -35,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9E31488820F35814001894FF /* ViewController+DayOne.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+DayOne.m"; sourceTree = "<group>"; };
+		9E31488920F35814001894FF /* ViewController+DayOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+DayOne.h"; sourceTree = "<group>"; };
 		9E44C0102098880E007F3B9C /* TestAlgorithm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAlgorithm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E44C0142098880E007F3B9C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9E44C0162098880E007F3B9C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -101,6 +104,8 @@
 		9E44C0122098880E007F3B9C /* TestAlgorithm */ = {
 			isa = PBXGroup;
 			children = (
+				9E31488920F35814001894FF /* ViewController+DayOne.h */,
+				9E31488820F35814001894FF /* ViewController+DayOne.m */,
 				9E44C0162098880E007F3B9C /* AppDelegate.h */,
 				9E44C0172098880E007F3B9C /* AppDelegate.m */,
 				9E44C0192098880E007F3B9C /* ViewController.h */,
@@ -273,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E31488A20F35814001894FF /* ViewController+DayOne.m in Sources */,
 				9E44C01B2098880E007F3B9C /* ViewController.m in Sources */,
 				9E44C0182098880E007F3B9C /* AppDelegate.m in Sources */,
 				9E44C0152098880E007F3B9C /* main.m in Sources */,
@@ -509,6 +515,7 @@
 				9E44C03F2098880E007F3B9C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9E44C0402098880E007F3B9C /* Build configuration list for PBXNativeTarget "TestAlgorithmTests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +524,7 @@
 				9E44C0422098880E007F3B9C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9E44C0432098880E007F3B9C /* Build configuration list for PBXNativeTarget "TestAlgorithmUITests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +533,7 @@
 				9E44C0452098880E007F3B9C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

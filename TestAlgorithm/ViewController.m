@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "ViewController+DayOne.h"
 
 @interface ViewController ()
 
@@ -17,27 +18,69 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    NSString *str1= @"ilovechina";
-//    NSString *str2= @"ihatechina";
-//    NSLog(@"你输入的两个字符串为:%@,%@",str1,str2);
-//    NSString *subStr=[self findMaxSubstring:str1 andString2:str2];
-//    if (subStr) {
-//        NSLog(@"最长公共子串是:%@",subStr);
-//    }
-    
-    
-//    NSMutableArray *arr = [[NSMutableArray alloc] initWithObjects:@(6), @(1),@(2),@(5),@(9),@(4),@(3),@(7),nil];
-//    [self quickSortArray:arr withLeftIndex:0 andRightIndex:arr.count - 1];
-    
-    
-//    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(2),@(1),@(5),@(9),@(4),@(3),@(7),nil];
-//    [self mergeSortArray:bubbleArray];
-//    NSLog(@"%@",bubbleArray);
-    
-    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(2),@(1),@(5),@(9),@(4),@(3),@(7),nil];
+
+    NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(2),@(1),@(5),@(9),@(8),@(3),@(7),nil];
 //    [self lessLeftMoreRight:bubbleArray andCompareNum:5];
-    [self mergeSortArray:bubbleArray];
+//    [self mergeSortArray:bubbleArray];
+    [self quickSort:bubbleArray];
+//    [self partionWithArray:bubbleArray andLPosition:0 andRPosition:bubbleArray.count - 1];
     NSLog(@"%@",bubbleArray);
+
+    [ViewController devided];
+    [ViewController letterToInt:@"AAA"];
+    [ViewController charToInt:@"AAA"];
+
+}
+
+- (void)quickSort:(NSMutableArray *)array
+{
+    if (array.count <2 || array == nil) {
+        return;
+    }
+    [self quickSortWithArray:array andLPosition:0 andRPosition:array.count - 1];
+}
+
+- (void)quickSortWithArray:(NSMutableArray *)array andLPosition:(NSInteger) l andRPosition:(NSInteger )r
+{
+    if (l < r) {
+//        [self swap:array andi:(l+r)/2 andj:r];
+        NSArray *positionArray = [self partionWithArray:array andLPosition:l andRPosition:r];
+        [self quickSortWithArray:array andLPosition:l andRPosition:([positionArray[0] intValue])];
+        [self quickSortWithArray:array andLPosition:([positionArray[1]intValue] +1) andRPosition:r];
+    }
+}
+
+- (NSArray *)partionWithArray:(NSMutableArray *)array andLPosition:(NSInteger) l andRPosition:(NSInteger )r
+{
+    NSMutableArray *currentArray = [NSMutableArray array];;
+    [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx > l - 1   || idx < r +1) {
+            [currentArray addObject:obj];
+        }
+    }];
+    
+    NSLog(@"原始array %@ ,分区的数%@",currentArray,[currentArray lastObject]);
+
+    int less = l -1 ;
+    int more = r ;
+    int current = l;
+    while (current < more) {
+        if ([array[current] integerValue] < [array[r] integerValue]) {
+            [self swap:array andi:++less  andj:current++];
+        }else if([array[current] integerValue] > [array[r] integerValue]) {
+            [self swap:array andi:--more andj:current];
+        }else {
+            current++;
+        }
+    }
+    NSLog(@"调整好的array %@ ",array);
+
+    [self swap:array andi:more andj:r];
+    NSLog(@"最后一个数调换 array %@ ",array);
+
+    NSArray *positionArray  = @[[NSNumber numberWithInt:less],[NSNumber numberWithInt:more]];
+
+    return positionArray;
 }
 /*问题：
  给定一个数组arr，和一个数num，请把小于等于num的数放在数 组的左边，大于num的数放在数组的右边。
@@ -341,55 +384,57 @@
     }
 }
 */
-- (void)quickSortArray:(NSMutableArray *)array withLeftIndex:(NSInteger)leftIndex andRightIndex:(NSInteger)rightIndex
-{
-    if (leftIndex >= rightIndex) {//如果数组长度为0或1时返回
-        return ;
-    }
-    
-    NSInteger i = leftIndex;
-    NSInteger j = rightIndex;
-    //记录比较基准数
-    NSInteger key = [array[i] integerValue];
-    
-//    NSLog(@"i = %ld,j = %ld,key = %ld array = %@",i,j,key,array);
-    
-    while (i < j) {
-        /**** 首先从右边j开始查找比基准数小的值 ***/
-        while (i < j && [array[j] integerValue] >= key) {//如果比基准数大，继续查找
-            NSLog(@"a【j】 = %ld,j = %ld,key = %ld",[array[j] integerValue],j,key);
 
-            j--;
-
-        }
-        //如果比基准数小，则将查找到的小值调换到i的位置
-        array[i] = array[j];
-        
-        NSLog(@"从右边遍历之后的数组%@",array);
-        
-        /**** 当在右边查找到一个比基准数小的值时，就从i开始往后找比基准数大的值 ***/
-        while (i < j && [array[i] integerValue] <= key) {//如果比基准数小，继续查找
-            NSLog(@"a【i】 = %ld,i = %ld,key = %ld",[array[i] integerValue],i,key);
-
-            i++;
-
-        }
-        //如果比基准数大，则将查找到的大值调换到j的位置
-        array[j] = array[i];
-        NSLog(@"从左边遍历之后的数组%@",array);
-
-        
-    }
-    
-    //将基准数放到正确位置
-    array[i] = @(key);
-//    NSLog(@"比较后的：%@",array);
-    /**** 递归排序 ***/
-    //排序基准数左边的
-//    [self quickSortArray:array withLeftIndex:leftIndex andRightIndex:i - 1];
-    //排序基准数右边的
-//    [self quickSortArray:array withLeftIndex:i + 1 andRightIndex:rightIndex];
-}
+//
+//- (void)quickSortArray:(NSMutableArray *)array withLeftIndex:(NSInteger)leftIndex andRightIndex:(NSInteger)rightIndex
+//{
+//    if (leftIndex >= rightIndex) {//如果数组长度为0或1时返回
+//        return ;
+//    }
+//
+//    NSInteger i = leftIndex;
+//    NSInteger j = rightIndex;
+//    //记录比较基准数
+//    NSInteger key = [array[i] integerValue];
+//
+////    NSLog(@"i = %ld,j = %ld,key = %ld array = %@",i,j,key,array);
+//
+//    while (i < j) {
+//        /**** 首先从右边j开始查找比基准数小的值 ***/
+//        while (i < j && [array[j] integerValue] >= key) {//如果比基准数大，继续查找
+//            NSLog(@"a【j】 = %ld,j = %ld,key = %ld",[array[j] integerValue],j,key);
+//
+//            j--;
+//
+//        }
+//        //如果比基准数小，则将查找到的小值调换到i的位置
+//        array[i] = array[j];
+//
+//        NSLog(@"从右边遍历之后的数组%@",array);
+//
+//        /**** 当在右边查找到一个比基准数小的值时，就从i开始往后找比基准数大的值 ***/
+//        while (i < j && [array[i] integerValue] <= key) {//如果比基准数小，继续查找
+//            NSLog(@"a【i】 = %ld,i = %ld,key = %ld",[array[i] integerValue],i,key);
+//
+//            i++;
+//
+//        }
+//        //如果比基准数大，则将查找到的大值调换到j的位置
+//        array[j] = array[i];
+//        NSLog(@"从左边遍历之后的数组%@",array);
+//
+//
+//    }
+//
+//    //将基准数放到正确位置
+//    array[i] = @(key);
+////    NSLog(@"比较后的：%@",array);
+//    /**** 递归排序 ***/
+//    //排序基准数左边的
+////    [self quickSortArray:array withLeftIndex:leftIndex andRightIndex:i - 1];
+//    //排序基准数右边的
+////    [self quickSortArray:array withLeftIndex:i + 1 andRightIndex:rightIndex];
+//}
 
 
 @end
