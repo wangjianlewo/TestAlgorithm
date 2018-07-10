@@ -73,4 +73,47 @@
     }
     NSLog(@"%ld",sum);
 }
+
++ (void)isPalindrome:(NSString *)string
+{
+    NSLog(@"input string %@",string);
+
+    NSInteger index = string.length/2;//除数
+    NSInteger addition = string.length%2;//余数。 主要是传入的字符串有奇数有偶数。奇数时，中间那个数就不算了。
+    NSString *frontString = [string substringWithRange:NSMakeRange(0, index)];
+    NSString *backString = [string substringWithRange:NSMakeRange(index+addition, index)];//分成两部分
+    NSMutableString *newFrontString = [[NSMutableString alloc] init];//反转前一部分
+    for (int i = frontString.length -1 ; i>-1; i--) {
+        [newFrontString appendFormat:[frontString substringWithRange:NSMakeRange(i, 1)] ];
+    }
+    NSLog(@"manager string %d,%@,%@",[newFrontString isEqualToString:backString],newFrontString,backString);
+}
+//更相减损法。1.先将偶数约成最简数 2.更相减损，直至所得的减数和差相等
++ (void)greatestCommonDivisor:(int)left andRight:(int)right
+{
+    int count = 1;
+    while  (left %2 == 0 && right %2 ==0) {
+        left = left/2;
+        right = right/2;
+        count ++;
+    }
+    while (left != right) {
+        if (left>right) {
+            left = left -right;
+        }else {
+            right = right - left;
+        }
+    }
+    NSLog(@"%ld",left*count);
+}
+//两个数相余，然后小数再余上次的余数，辗转，直至余数为0，则上次的余数为其公约数
++ (void)greatestCommonDivisorSecond:(int)left andRight:(int)right
+{
+    while (right != 0 && left % right != 0) {
+       int temp  =  left % right ;
+        left = right;
+        right = temp;
+    }
+    NSLog(@"%ld",right);
+}
 @end

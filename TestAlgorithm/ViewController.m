@@ -29,7 +29,9 @@
 //    [ViewController devided];
 //    [ViewController letterToInt:@"AAA"];
 //    [ViewController charToInt:@"AAA"];
-
+    
+//    [ViewController isPalindrome:@"abcdef"];
+    [ViewController greatestCommonDivisorSecond:319 andRight:377];
 }
 
 - (void)quickSort:(NSMutableArray *)array

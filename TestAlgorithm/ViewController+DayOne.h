@@ -12,4 +12,8 @@
 +(void)devided;
 +(void)letterToInt:(NSString *)letter;
 +(void)charToInt:(NSString *)letter;
++ (void)isPalindrome:(NSString *)string;
++ (void)greatestCommonDivisor:(int)left andRight:(int)right;
++ (void)greatestCommonDivisorSecond:(int)left andRight:(int)right;
+
 @end
