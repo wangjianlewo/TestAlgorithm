@@ -22,8 +22,9 @@
     NSMutableArray *bubbleArray = [[NSMutableArray alloc] initWithObjects:@(6), @(2),@(1),@(5),@(9),@(8),@(3),@(7),nil];
 //    [self lessLeftMoreRight:bubbleArray andCompareNum:5];
 //    [self mergeSortArray:bubbleArray];
-    [self quickSort:bubbleArray];
+//    [self quickSort:bubbleArray];
 //    [self partionWithArray:bubbleArray andLPosition:0 andRPosition:bubbleArray.count - 1];
+    [self heapSort:bubbleArray];
     NSLog(@"%@",bubbleArray);
 
 //    [ViewController devided];
@@ -31,7 +32,57 @@
 //    [ViewController charToInt:@"AAA"];
     
 //    [ViewController isPalindrome:@"abcdef"];
-    [ViewController greatestCommonDivisorSecond:319 andRight:377];
+//    [ViewController greatestCommonDivisorSecond:319 andRight:377];
+//    [ViewController compareVersion];
+//    [ViewController rangeCoincide];
+    [ViewController statisticsSameWord];
+}
+
+- (void)heapSort:(NSMutableArray *)array
+{
+    if (array.count <2 || array == nil) {
+        return;
+    }
+    //建立堆的过程heapInsert，此时堆顶为最大
+    for (int i = 0; i < array.count; i++) {
+        [self heapInsert:array andIndex:i];
+    }
+    NSLog(@"创建完堆之后的数组 %@",array);
+    //先将堆顶的最大值，放到最后。然后堆顶变成了一个未知数，最大值在数组末尾
+    NSUInteger size = array.count;
+    [self swap:array andi:0 andj:--size ];
+    //此时将数组最后位置移出堆（因为已经排好了），即size -1 即可。
+    //而此时依然需要保持堆顶最大,则进行heapify。当前数和 其孩子节点较大的那个交换，然后一直交换，直到当前节点值大于其孩子结点
+    while (size >0) {
+        //index 为什么是0？ 是上一步 ，将最后一个-- array.count 与堆顶0交换，现在需要将堆顶往下沉
+        [self heapify:array andIndex:0 andSize:size];
+        [self swap:array andi:0 andj:--size];
+    }
+}
+
+- (void)heapInsert:(NSMutableArray *)array andIndex:(NSInteger )index
+{
+    //新加入一个数，这个数和他的父节点（i-1）/2 进行比较，如果大，那么就交换，然后继续和他的上一级父节点比较
+    //创建堆的时间复杂度是：log1+log2+。。。+logN  最后结果为O（N）
+    while (array[index] > array[(index -1)/2]) {
+        [self swap:array andi:index andj:(index -1)/2];
+        index = (index -1)/2;
+    }
+}
+
+- (void)heapify:(NSArray *)array andIndex:(NSInteger)index andSize:(NSInteger)size
+{
+    int left = 2*index +1;
+    while (left < size) {
+        int largest = left+1 < size && array[left +1 ] > array[left] ? left +1:left;
+        largest = array[index]  >array[largest] ? index:largest;
+        if (largest == index) {
+            break;
+        }
+        [self swap:array andi:index andj:largest];
+        index = largest;
+        left = 2*index +1;
+    }
 }
 
 - (void)quickSort:(NSMutableArray *)array

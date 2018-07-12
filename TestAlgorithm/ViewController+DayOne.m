@@ -116,4 +116,83 @@
     }
     NSLog(@"%ld",right);
 }
+//有两个已经排好序的数组(升序)，现在把这两个数组合成一个按升序排列的数组
++ (void)mergeArray
+{
+    NSArray *array1 = @[@"1",@"3",@"7",@"9"];
+    NSArray *array2 = @[@"2",@"5",@"6"];
+    NSMutableArray *array3 = [NSMutableArray array];
+    int a = 0;
+    int b = 0;
+    while (a < array1.count && b < array2.count) {
+        if ([array1[a] intValue] > [array2[b] intValue]) {
+            [array3 addObject:array2[b]];
+            b ++;
+        }else {
+            [array3 addObject:array1[a]];
+            a ++;
+        }
+    }
+    if (a == array1.count) {
+        for (int j = b ; j < array2.count; j++) {
+            [array3 addObject:array2[j]];
+        }
+    }
+    if (b == array2.count) {
+        for (int j = a ; j < array1.count; j++) {
+            [array3 addObject:array1[j]];
+        }
+    }
+    NSLog(@"%@",array3);
+}
+
+//输入两个字符串表示version，"1.1.2", "1.1.1", 判断两个version那个是最新的
++(void)compareVersion
+{
+    NSString *version1 = @"1.2.2";
+    NSString *version2 = @"1.2.1";
+    NSArray *array1 = [version1 componentsSeparatedByString:@"."];
+    NSArray *array2 = [version2 componentsSeparatedByString:@"."];
+    NSUInteger min = array1.count > array2.count ? array2.count : array1.count;
+    for (int i = 0; i <min; i ++) {
+        if ([array1 [i] integerValue] >[array2 [i] integerValue] ) {
+            NSLog(@"version1 较新");
+            return;
+        }else if ([array1 [i] integerValue] <[array2 [i] integerValue] ) {
+            NSLog(@"version2 较新");
+            return;
+        }else {
+            i++;
+        }
+    }
+}
+//给定两个区间，判断这两个区间是否重合
++ (void)rangeCoincide
+{
+    NSString *version1 = @"4,8";
+    NSString *version2 = @"2,6";
+    NSArray *array1 = [version1 componentsSeparatedByString:@","];
+    NSArray *array2 = [version2 componentsSeparatedByString:@","];
+    if (array2[0] > array1[1] || array1[0] > array2[1] ) {
+        NSLog(@"无重合部分");
+    }else {
+        NSLog(@"有重合部分");
+    }
+}
+
++ (void)statisticsSameWord
+{
+    NSArray *array = @[@"abc",@"boy",@"girl",@"boy",@"abcd",@"abcd"];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [array enumerateObjectsUsingBlock:^(NSString *string, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([dict objectForKey:string]) {
+            NSInteger num = [[dict objectForKey:string] integerValue];
+            num ++;
+            [dict setObject:[NSNumber numberWithInteger:num] forKey:string];
+        }else {
+            [dict setObject:@"1" forKey:string];
+        }
+    }];
+    NSLog(@"%@",dict);
+}
 @end
